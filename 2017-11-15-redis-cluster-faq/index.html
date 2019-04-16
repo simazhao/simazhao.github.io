@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="WindFlow">
 <meta property="og:description" content="Redis cluster FAQcreateruby updatecurl -L get.rvm.io | bash -s stablervm install 2.3.0rvm use 2.3.0 --defaultruby --version gemsyum install rubygemsgem install redis create clusterredis-trib.rb  creat">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-11-15T10:02:00.000Z">
+<meta property="og:updated_time" content="2019-04-16T06:33:20.306Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis cluster faq">
 <meta name="twitter:description" content="Redis cluster FAQcreateruby updatecurl -L get.rvm.io | bash -s stablervm install 2.3.0rvm use 2.3.0 --defaultruby --version gemsyum install rubygemsgem install redis create clusterredis-trib.rb  creat">
@@ -140,9 +140,9 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="Redis-cluster-FAQ"><a href="#Redis-cluster-FAQ" class="headerlink" title="Redis cluster FAQ"></a>Redis cluster FAQ</h2><h3 id="create"><a href="#create" class="headerlink" title="create"></a>create</h3><h4 id="ruby-update"><a href="#ruby-update" class="headerlink" title="ruby update"></a>ruby update</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">curl -L get.rvm.io | bash -s stable</span><br><span class="line">rvm install 2.3.0</span><br><span class="line">rvm use 2.3.0 --default</span><br><span class="line"></span><br><span class="line">ruby --version</span><br></pre></td></tr></table></figure>
-<h4 id="gems"><a href="#gems" class="headerlink" title="gems"></a>gems</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yum install rubygems</span><br><span class="line">gem install redis</span><br></pre></td></tr></table></figure>
-<h4 id="create-cluster"><a href="#create-cluster" class="headerlink" title="create cluster"></a>create cluster</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">redis-trib.rb  create --replicas 1 172.131.120.116:6379  172.131.120.116:6380 172.131.120.116:6381  172.131.120.117:6379 172.131.120.117:6380 172.131.120.117:6381</span><br></pre></td></tr></table></figure>
+    <h2 id="Redis-cluster-FAQ"><a href="#Redis-cluster-FAQ" class="headerlink" title="Redis cluster FAQ"></a>Redis cluster FAQ</h2><h3 id="create"><a href="#create" class="headerlink" title="create"></a>create</h3><h4 id="ruby-update"><a href="#ruby-update" class="headerlink" title="ruby update"></a>ruby update</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl -L get.rvm.io | bash <span class="_">-s</span> stable</span><br><span class="line">rvm install 2.3.0</span><br><span class="line">rvm use 2.3.0 --default</span><br><span class="line"></span><br><span class="line">ruby --version</span><br></pre></td></tr></table></figure>
+<h4 id="gems"><a href="#gems" class="headerlink" title="gems"></a>gems</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">yum install rubygems</span><br><span class="line">gem install redis</span><br></pre></td></tr></table></figure>
+<h4 id="create-cluster"><a href="#create-cluster" class="headerlink" title="create cluster"></a>create cluster</h4><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">redis-trib.rb  create --replicas 1 172.131.120.116:6379  172.131.120.116:6380 172.131.120.116:6381  172.131.120.117:6379 172.131.120.117:6380 172.131.120.117:6381</span><br></pre></td></tr></table></figure>
 <h4 id="traps"><a href="#traps" class="headerlink" title="traps"></a>traps</h4><ul>
 <li><p>如果端口是6379，那么cluster的默认通信端口是+10000，需要在iptables加上6379和16379的访问权限</p>
 </li>
