@@ -6,17 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="Why use ConfigureAwait(false)思考当我们写下这样的代码时，发生了什么？     public async Task BuyJuice()     {         await WaitInQueue();          Pay();          await GetJuice();     }  What happened in async/await内部原理">
+    <meta name="description" content="Why use ConfigureAwait(false)思考当我们写下这样的代码时，发生了什么？ public async Task BuyJuice()&amp;#123;    await WaitInQueue();    Pay();    await GetJuice();&amp;#125; What happened in async/await内部原理参考这篇 文章 简单地来说，编译器会将 as">
 <meta property="og:type" content="article">
 <meta property="og:title" content="why use ConfigureAwait">
 <meta property="og:url" content="https://simazhao.github.io/2018-12-14-why-use-ConfigureAwait/index.html">
 <meta property="og:site_name" content="WindFlow">
-<meta property="og:description" content="Why use ConfigureAwait(false)思考当我们写下这样的代码时，发生了什么？     public async Task BuyJuice()     {         await WaitInQueue();          Pay();          await GetJuice();     }  What happened in async/await内部原理">
+<meta property="og:description" content="Why use ConfigureAwait(false)思考当我们写下这样的代码时，发生了什么？ public async Task BuyJuice()&amp;#123;    await WaitInQueue();    Pay();    await GetJuice();&amp;#125; What happened in async/await内部原理参考这篇 文章 简单地来说，编译器会将 as">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-02-28T02:56:00.231Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="why use ConfigureAwait">
-<meta name="twitter:description" content="Why use ConfigureAwait(false)思考当我们写下这样的代码时，发生了什么？     public async Task BuyJuice()     {         await WaitInQueue();          Pay();          await GetJuice();     }  What happened in async/await内部原理">
+<meta name="twitter:description" content="Why use ConfigureAwait(false)思考当我们写下这样的代码时，发生了什么？ public async Task BuyJuice()&amp;#123;    await WaitInQueue();    Pay();    await GetJuice();&amp;#125; What happened in async/await内部原理参考这篇 文章 简单地来说，编译器会将 as">
     
     
         
@@ -141,15 +141,7 @@
 
   <div class="content" itemprop="articleBody">
     <h1 id="Why-use-ConfigureAwait-false"><a href="#Why-use-ConfigureAwait-false" class="headerlink" title="Why use ConfigureAwait(false)"></a>Why use ConfigureAwait(false)</h1><p>思考当我们写下这样的代码时，发生了什么？</p>
-<pre class=" language-c#"><code class="language-c#">    public async Task BuyJuice()
-    {
-        await WaitInQueue();
-
-        Pay();
-
-        await GetJuice();
-    }
-</code></pre>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public async Task BuyJuice()</span><br><span class="line">&#123;</span><br><span class="line">    await WaitInQueue();</span><br><span class="line"></span><br><span class="line">    Pay();</span><br><span class="line"></span><br><span class="line">    await GetJuice();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="What-happened-in-async-await"><a href="#What-happened-in-async-await" class="headerlink" title="What happened in async/await"></a>What happened in async/await</h2><p>内部原理参考这篇 <a href="https://weblogs.asp.net/dixin/understanding-c-sharp-async-await-1-compilation" target="_blank" rel="noopener">文章</a></p>
 <p>简单地来说，编译器会将 async 方法转化为 AsyncStateMachine。 而 await 会转化为 StateMachine.MoveNext() 方法内部的 GetAwaiter();。接着判断 awaiter 是否 Completed。 如果没有，则阻塞等待。 等待结束后，变更状态。如果还有后续任务，则继续调用MoveNext(); StateMachine 根据上一步的状态来决定当前的操作。</p>
 <p>需要注意的是，不管方法是否有 async 标识，只要返回了 Task，都是 awaitable 。</p>

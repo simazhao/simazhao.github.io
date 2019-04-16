@@ -6,17 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="the power usage of Aggregate因为阅读了某位作者文章的缘故，我也去翻了下.net Mvc启动管道的源码。在其中发现了这么一段代码：      endContinuation = filters.Reverse().Aggregate((Func) (() =&amp;gt;         {           innerAsyncResult = this.BeginInvokeA">
+    <meta name="description" content="the power usage of Aggregate因为阅读了某位作者文章的缘故，我也去翻了下.net Mvc启动管道的源码。在其中发现了这么一段代码： endContinuation = filters.Reverse&amp;lt;IActionFilter&amp;gt;().Aggregate&amp;lt;IActionFilter, Func&amp;lt;Func&amp;lt;ActionExecutedContex">
 <meta property="og:type" content="article">
 <meta property="og:title" content="the power usage of Aggregate">
 <meta property="og:url" content="https://simazhao.github.io/2017-09-14-the-power-usage-of-Aggregate/index.html">
 <meta property="og:site_name" content="WindFlow">
-<meta property="og:description" content="the power usage of Aggregate因为阅读了某位作者文章的缘故，我也去翻了下.net Mvc启动管道的源码。在其中发现了这么一段代码：      endContinuation = filters.Reverse().Aggregate((Func) (() =&amp;gt;         {           innerAsyncResult = this.BeginInvokeA">
+<meta property="og:description" content="the power usage of Aggregate因为阅读了某位作者文章的缘故，我也去翻了下.net Mvc启动管道的源码。在其中发现了这么一段代码： endContinuation = filters.Reverse&amp;lt;IActionFilter&amp;gt;().Aggregate&amp;lt;IActionFilter, Func&amp;lt;Func&amp;lt;ActionExecutedContex">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-02-27T11:58:14.299Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="the power usage of Aggregate">
-<meta name="twitter:description" content="the power usage of Aggregate因为阅读了某位作者文章的缘故，我也去翻了下.net Mvc启动管道的源码。在其中发现了这么一段代码：      endContinuation = filters.Reverse().Aggregate((Func) (() =&amp;gt;         {           innerAsyncResult = this.BeginInvokeA">
+<meta name="twitter:description" content="the power usage of Aggregate因为阅读了某位作者文章的缘故，我也去翻了下.net Mvc启动管道的源码。在其中发现了这么一段代码： endContinuation = filters.Reverse&amp;lt;IActionFilter&amp;gt;().Aggregate&amp;lt;IActionFilter, Func&amp;lt;Func&amp;lt;ActionExecutedContex">
     
     
         
@@ -141,79 +141,9 @@
 
   <div class="content" itemprop="articleBody">
     <h2 id="the-power-usage-of-Aggregate"><a href="#the-power-usage-of-Aggregate" class="headerlink" title="the power usage of Aggregate"></a>the power usage of Aggregate</h2><p>因为阅读了某位作者文章的缘故，我也去翻了下.net Mvc启动管道的源码。在其中发现了这么一段代码：</p>
-<pre class=" language-C#"><code class="language-C#">     endContinuation = filters.Reverse<iactionfilter>().Aggregate<iactionfilter, func<func<actionexecutedcontext="">>>((Func<func<actionexecutedcontext>>) (() =>
-        {
-          innerAsyncResult = this.BeginInvokeActionMethod(controllerContext, actionDescriptor, parameters, asyncCallback, asyncState);
-          return (Func<actionexecutedcontext>) (() => new ActionExecutedContext(controllerContext, actionDescriptor, false, (Exception) null)
-          {
-            Result = this.EndInvokeActionMethod(innerAsyncResult)
-          });
-        }), (Func<func<func<actionexecutedcontext>>, IActionFilter, Func<func<actionexecutedcontext>>>) ((next, filter) => (Func<func<actionexecutedcontext>>) (() => AsyncControllerActionInvoker.InvokeActionMethodFilterAsynchronously(filter, preContext, next))))();
-</func<actionexecutedcontext></func<actionexecutedcontext></func<func<actionexecutedcontext></actionexecutedcontext></func<actionexecutedcontext></iactionfilter,></iactionfilter></code></pre>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">endContinuation = filters.Reverse&lt;IActionFilter&gt;().Aggregate&lt;IActionFilter, Func&lt;Func&lt;ActionExecutedContext&gt;&gt;&gt;((Func&lt;Func&lt;ActionExecutedContext&gt;&gt;) (() =&gt;</span><br><span class="line">   &#123;</span><br><span class="line">     innerAsyncResult = this.BeginInvokeActionMethod(controllerContext, actionDescriptor, parameters, asyncCallback, asyncState);</span><br><span class="line">     return (Func&lt;ActionExecutedContext&gt;) (() =&gt; new ActionExecutedContext(controllerContext, actionDescriptor, false, (Exception) null)</span><br><span class="line">     &#123;</span><br><span class="line">       Result = this.EndInvokeActionMethod(innerAsyncResult)</span><br><span class="line">     &#125;);</span><br><span class="line">   &#125;), (Func&lt;Func&lt;Func&lt;ActionExecutedContext&gt;&gt;, IActionFilter, Func&lt;Func&lt;ActionExecutedContext&gt;&gt;&gt;) ((next, filter) =&gt; (Func&lt;Func&lt;ActionExecutedContext&gt;&gt;) (() =&gt; AsyncControllerActionInvoker.InvokeActionMethodFilterAsynchronously(filter, preContext, next))))();</span><br></pre></td></tr></table></figure>
 <p>一看之下，几乎要被它长长的气势所吓倒。其本质是Linq聚合函数，只不过一串Func实在太过耀眼。为了深入理解，我写了段相似代码来模拟运行。</p>
-<pre class=" language-C#"><code class="language-C#">        public static void TestFilters()
-        {
-            var filters = new List<imyfilter> {new MyFilter.FilterA(), new MyFilter.FilterB(), new MyFilter.FilterC()};
-            var invoker = new Invoker();
-            var context = new ExecutingContext();
-            var endContinuation = filters.Aggregate<imyfilter, func<func<executedcontext="">>>((Func<func<executedcontext>>)(() =>
-            {
-                var innerResult = invoker.BeginInvoke(context);
-                return (Func<executedcontext>)(() => new ExecutedContext()
-                {
-                    Result = invoker.EndInvoke(innerResult)
-                });
-            }), (Func<func<func<executedcontext>>, IMyFilter, Func<func<executedcontext>>>)((next, filter) => 
-            (Func<func<executedcontext>>)(() => InvokeAction(filter, context, next))))();
-
-            endContinuation();
-        }
-
-        internal static Func<executedcontext> InvokeAction(IMyFilter filter, ExecutingContext preContext, Func<func<executedcontext>> nextInChain)
-        {
-            filter.OnExecuting(preContext);
-            if (preContext.Result != null)
-            {
-                ExecutedContext shortCircuitedPostContext = new ExecutedContext()
-                {
-                    Result = preContext.Result
-                };
-                return () => shortCircuitedPostContext;
-            }
-            try
-            {
-                Func<executedcontext> continuation = nextInChain();
-                return (Func<executedcontext>)(() =>
-                {
-                    bool flag = true;
-                    ExecutedContext filterContext;
-                    try
-                    {
-                        filterContext = continuation();
-                        flag = false;
-                    }
-                    catch (Exception ex)
-                    {
-                        filterContext = new ExecutedContext();
-                        filter.OnExecuted(filterContext);
-                        if (!filterContext.ExceptionHandled)
-                            throw;
-                    }
-                    if (!flag)
-                        filter.OnExecuted(filterContext);
-                    return filterContext;
-                });
-            }
-            catch (Exception ex)
-            {
-                ExecutedContext postContext = new ExecutedContext();
-                filter.OnExecuted(postContext);
-                if (postContext.ExceptionHandled)
-                    return (Func<executedcontext>)(() => postContext);
-                throw;
-            }
-        }
-</executedcontext></executedcontext></executedcontext></func<executedcontext></executedcontext></func<executedcontext></func<executedcontext></func<func<executedcontext></executedcontext></func<executedcontext></imyfilter,></imyfilter></code></pre>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">public static void TestFilters()</span><br><span class="line">&#123;</span><br><span class="line">    var filters = new List&lt;IMyFilter&gt; &#123;new MyFilter.FilterA(), new MyFilter.FilterB(), new MyFilter.FilterC()&#125;;</span><br><span class="line">    var invoker = new Invoker();</span><br><span class="line">    var context = new ExecutingContext();</span><br><span class="line">    var endContinuation = filters.Aggregate&lt;IMyFilter, Func&lt;Func&lt;ExecutedContext&gt;&gt;&gt;((Func&lt;Func&lt;ExecutedContext&gt;&gt;)(() =&gt;</span><br><span class="line">    &#123;</span><br><span class="line">        var innerResult = invoker.BeginInvoke(context);</span><br><span class="line">        return (Func&lt;ExecutedContext&gt;)(() =&gt; new ExecutedContext()</span><br><span class="line">        &#123;</span><br><span class="line">            Result = invoker.EndInvoke(innerResult)</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;), (Func&lt;Func&lt;Func&lt;ExecutedContext&gt;&gt;, IMyFilter, Func&lt;Func&lt;ExecutedContext&gt;&gt;&gt;)((next, filter) =&gt; </span><br><span class="line">    (Func&lt;Func&lt;ExecutedContext&gt;&gt;)(() =&gt; InvokeAction(filter, context, next))))();</span><br><span class="line"></span><br><span class="line">    endContinuation();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">internal static Func&lt;ExecutedContext&gt; InvokeAction(IMyFilter filter, ExecutingContext preContext, Func&lt;Func&lt;ExecutedContext&gt;&gt; nextInChain)</span><br><span class="line">&#123;</span><br><span class="line">    filter.OnExecuting(preContext);</span><br><span class="line">    if (preContext.Result != null)</span><br><span class="line">    &#123;</span><br><span class="line">        ExecutedContext shortCircuitedPostContext = new ExecutedContext()</span><br><span class="line">        &#123;</span><br><span class="line">            Result = preContext.Result</span><br><span class="line">        &#125;;</span><br><span class="line">        return () =&gt; shortCircuitedPostContext;</span><br><span class="line">    &#125;</span><br><span class="line">    try</span><br><span class="line">    &#123;</span><br><span class="line">        Func&lt;ExecutedContext&gt; continuation = nextInChain();</span><br><span class="line">        return (Func&lt;ExecutedContext&gt;)(() =&gt;</span><br><span class="line">        &#123;</span><br><span class="line">            bool flag = true;</span><br><span class="line">            ExecutedContext filterContext;</span><br><span class="line">            try</span><br><span class="line">            &#123;</span><br><span class="line">                filterContext = continuation();</span><br><span class="line">                flag = false;</span><br><span class="line">            &#125;</span><br><span class="line">            catch (Exception ex)</span><br><span class="line">            &#123;</span><br><span class="line">                filterContext = new ExecutedContext();</span><br><span class="line">                filter.OnExecuted(filterContext);</span><br><span class="line">                if (!filterContext.ExceptionHandled)</span><br><span class="line">                    throw;</span><br><span class="line">            &#125;</span><br><span class="line">            if (!flag)</span><br><span class="line">                filter.OnExecuted(filterContext);</span><br><span class="line">            return filterContext;</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    catch (Exception ex)</span><br><span class="line">    &#123;</span><br><span class="line">        ExecutedContext postContext = new ExecutedContext();</span><br><span class="line">        filter.OnExecuted(postContext);</span><br><span class="line">        if (postContext.ExceptionHandled)</span><br><span class="line">            return (Func&lt;ExecutedContext&gt;)(() =&gt; postContext);</span><br><span class="line">        throw;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里的流程如下：</p>
 <blockquote>
 <p>集合：FilterA, FilterB, FilterC</p>
@@ -281,15 +211,9 @@
 </blockquote>
 <p>从此，我们也可以窥见Mvc Action Filter的原理是什么。</p>
 <p>一般来说，我们对于Linq Aggregate 的运用都来自于很简单的例子，或者很常见的场景，比如字符串连接：</p>
-<pre class=" language-C#"><code class="language-C#">    new List<string>() {"aa", "bb"}.Aggregate((t, e) => t + "-" + e)
-</string></code></pre>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">new List&lt;String&gt;() &#123;&quot;aa&quot;, &quot;bb&quot;&#125;.Aggregate((t, e) =&gt; t + &quot;-&quot; + e)</span><br></pre></td></tr></table></figure>
 <p>这么写谁都会，但涉及到复杂一点的东西，就不会想到用聚合来做。说到底，还是对某种概念的理解流于表面。例如，我们可以这样实现一个累加生成器：</p>
-<pre class=" language-C#"><code class="language-C#">        Func<int, int=""> Sumer(IEnumerable<int> seeds)
-        {
-            return seeds.Aggregate<int, func<int,="" int="">>(x => x, (next, number) => y => next(number) + y);
-        }
-        Sumer(new [] {1,2,3})(4); //10
-</int,></int></int,></code></pre>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Func&lt;int, int&gt; Sumer(IEnumerable&lt;int&gt; seeds)</span><br><span class="line">&#123;</span><br><span class="line">    return seeds.Aggregate&lt;int, Func&lt;int, int&gt;&gt;(x =&gt; x, (next, number) =&gt; y =&gt; next(number) + y);</span><br><span class="line">&#125;</span><br><span class="line">Sumer(new [] &#123;1,2,3&#125;)(4); //10</span><br></pre></td></tr></table></figure>
 
   </div>
 </article>

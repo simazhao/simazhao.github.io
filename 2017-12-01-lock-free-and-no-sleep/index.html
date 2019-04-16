@@ -6,17 +6,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="HandheldFriendly" content="True">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="description" content="失踪的毕加索和斯内普多线程顺序读取不加锁        int myindex;         readonly List mydata = new List() { 5, 7, 9 };          int getdata()         {             var oldindex = myindex;              while(Interlocked.Comp">
+    <meta name="description" content="失踪的毕加索和斯内普多线程顺序读取不加锁int myindex;readonly List&amp;lt;int&amp;gt; mydata = new List&amp;lt;int&amp;gt;() &amp;#123; 5, 7, 9 &amp;#125;;int getdata()&amp;#123;    var oldindex = myindex;    while(Interlocked.CompareExchange(ref my">
 <meta property="og:type" content="article">
 <meta property="og:title" content="free lock and no sleep">
 <meta property="og:url" content="https://simazhao.github.io/2017-12-01-lock-free-and-no-sleep/index.html">
 <meta property="og:site_name" content="WindFlow">
-<meta property="og:description" content="失踪的毕加索和斯内普多线程顺序读取不加锁        int myindex;         readonly List mydata = new List() { 5, 7, 9 };          int getdata()         {             var oldindex = myindex;              while(Interlocked.Comp">
+<meta property="og:description" content="失踪的毕加索和斯内普多线程顺序读取不加锁int myindex;readonly List&amp;lt;int&amp;gt; mydata = new List&amp;lt;int&amp;gt;() &amp;#123; 5, 7, 9 &amp;#125;;int getdata()&amp;#123;    var oldindex = myindex;    while(Interlocked.CompareExchange(ref my">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2019-02-27T12:01:29.096Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="free lock and no sleep">
-<meta name="twitter:description" content="失踪的毕加索和斯内普多线程顺序读取不加锁        int myindex;         readonly List mydata = new List() { 5, 7, 9 };          int getdata()         {             var oldindex = myindex;              while(Interlocked.Comp">
+<meta name="twitter:description" content="失踪的毕加索和斯内普多线程顺序读取不加锁int myindex;readonly List&amp;lt;int&amp;gt; mydata = new List&amp;lt;int&amp;gt;() &amp;#123; 5, 7, 9 &amp;#125;;int getdata()&amp;#123;    var oldindex = myindex;    while(Interlocked.CompareExchange(ref my">
     
     
         
@@ -140,38 +140,8 @@
   
 
   <div class="content" itemprop="articleBody">
-    <h2 id="失踪的毕加索和斯内普"><a href="#失踪的毕加索和斯内普" class="headerlink" title="失踪的毕加索和斯内普"></a>失踪的毕加索和斯内普</h2><h3 id="多线程顺序读取不加锁"><a href="#多线程顺序读取不加锁" class="headerlink" title="多线程顺序读取不加锁"></a>多线程顺序读取不加锁</h3><pre class=" language-C#"><code class="language-C#">        int myindex;
-        readonly List<int> mydata = new List<int>() { 5, 7, 9 };
-
-        int getdata()
-        {
-            var oldindex = myindex;
-
-            while(Interlocked.CompareExchange(ref myindex, (oldindex+1)%mydata.Count, oldindex) != oldindex)
-            {
-                oldindex = myindex;
-            }
-
-            return mydata[myindex];
-        }
-</int></int></code></pre>
-<h3 id="等待读取不睡眠"><a href="#等待读取不睡眠" class="headerlink" title="等待读取不睡眠"></a>等待读取不睡眠</h3><pre class=" language-C#"><code class="language-C#">        ConcurrentQueue<object> logQueue = new ConcurrentQueue<object>();
-
-        void ConsumeLogContinuously()
-        {
-            while (true)
-            {
-                if (this.logQueue.Count > 0)
-                {
-                    this.ConsumeLog();
-                }
-                else
-                {
-                    SpinWait.SpinUntil(() => this.logQueue.Count > 0);
-                }
-            }
-        }
-</object></object></code></pre>
+    <h2 id="失踪的毕加索和斯内普"><a href="#失踪的毕加索和斯内普" class="headerlink" title="失踪的毕加索和斯内普"></a>失踪的毕加索和斯内普</h2><h3 id="多线程顺序读取不加锁"><a href="#多线程顺序读取不加锁" class="headerlink" title="多线程顺序读取不加锁"></a>多线程顺序读取不加锁</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">int myindex;</span><br><span class="line">readonly List&lt;int&gt; mydata = new List&lt;int&gt;() &#123; 5, 7, 9 &#125;;</span><br><span class="line"></span><br><span class="line">int getdata()</span><br><span class="line">&#123;</span><br><span class="line">    var oldindex = myindex;</span><br><span class="line"></span><br><span class="line">    while(Interlocked.CompareExchange(ref myindex, (oldindex+1)%mydata.Count, oldindex) != oldindex)</span><br><span class="line">    &#123;</span><br><span class="line">        oldindex = myindex;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    return mydata[myindex];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="等待读取不睡眠"><a href="#等待读取不睡眠" class="headerlink" title="等待读取不睡眠"></a>等待读取不睡眠</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">ConcurrentQueue&lt;object&gt; logQueue = new ConcurrentQueue&lt;object&gt;();</span><br><span class="line"></span><br><span class="line">void ConsumeLogContinuously()</span><br><span class="line">&#123;</span><br><span class="line">    while (true)</span><br><span class="line">    &#123;</span><br><span class="line">        if (this.logQueue.Count &gt; 0)</span><br><span class="line">        &#123;</span><br><span class="line">            this.ConsumeLog();</span><br><span class="line">        &#125;</span><br><span class="line">        else</span><br><span class="line">        &#123;</span><br><span class="line">            SpinWait.SpinUntil(() =&gt; this.logQueue.Count &gt; 0);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
   </div>
 </article>
