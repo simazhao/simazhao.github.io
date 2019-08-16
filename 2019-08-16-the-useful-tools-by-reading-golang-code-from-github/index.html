@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.8.0">
+    <!-- so meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="从 Github Golang 开源库中学到的知识cmdline promptcobracobra github.com/spf13/cobra 支持多级菜单，命令建议，建立文档，使用说明等。 DIwirewire github.com/google/wire 省去了繁琐的调用构造函数的生成最终对象的过程，把你从无意义的劳动中解脱出来。 Go routineasyncasync github.co">
+<meta property="og:type" content="article">
+<meta property="og:title" content="the useful tools by reading golang code from github">
+<meta property="og:url" content="https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/index.html">
+<meta property="og:site_name" content="WindFlow">
+<meta property="og:description" content="从 Github Golang 开源库中学到的知识cmdline promptcobracobra github.com/spf13/cobra 支持多级菜单，命令建议，建立文档，使用说明等。 DIwirewire github.com/google/wire 省去了繁琐的调用构造函数的生成最终对象的过程，把你从无意义的劳动中解脱出来。 Go routineasyncasync github.co">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-08-16T02:02:55.722Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="the useful tools by reading golang code from github">
+<meta name="twitter:description" content="从 Github Golang 开源库中学到的知识cmdline promptcobracobra github.com/spf13/cobra 支持多级菜单，命令建议，建立文档，使用说明等。 DIwirewire github.com/google/wire 省去了繁琐的调用构造函数的生成最终对象的过程，把你从无意义的劳动中解脱出来。 Go routineasyncasync github.co">
+    
+    
+        
+          
+              <link rel="shortcut icon" href="/images/favicon.ico">
+          
+        
+        
+          
+            <link rel="icon" type="image/png" href="/images/favicon-192x192.png" sizes="192x192">
+          
+        
+        
+          
+            <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+          
+        
+    
+    <!-- title -->
+    <title>the useful tools by reading golang code from github</title>
+    <!-- styles -->
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- persian styles -->
+    
+      <link rel="stylesheet" href="/css/rtl.css">
+    
+    <!-- rss -->
+    
+    
+<link rel="stylesheet" href="/css/prism-tomorrow.css" type="text/css"></head>
+
+<body class="max-width mx-auto px3 ltr">    
+      <div id="header-post">
+  <a id="menu-icon" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="menu-icon-tablet" href="#"><i class="fas fa-bars fa-lg"></i></a>
+  <a id="top-icon-tablet" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');" style="display:none;"><i class="fas fa-chevron-up fa-lg"></i></a>
+  <span id="menu">
+    <span id="nav">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/">项目</a></li>
+        
+      </ul>
+    </span>
+    <br>
+    <span id="actions">
+      <ul>
+        
+        
+        <li><a class="icon" href="/2019-04-15-why-aspnetcore-can-not-effect-host-urls-in-appsettings-json/"><i class="fas fa-chevron-right" aria-hidden="true" onmouseover="$('#i-next').toggle();" onmouseout="$('#i-next').toggle();"></i></a></li>
+        
+        <li><a class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up" aria-hidden="true" onmouseover="$('#i-top').toggle();" onmouseout="$('#i-top').toggle();"></i></a></li>
+        <li><a class="icon" href="#"><i class="fas fa-share-alt" aria-hidden="true" onmouseover="$('#i-share').toggle();" onmouseout="$('#i-share').toggle();" onclick="$('#share').toggle();return false;"></i></a></li>
+      </ul>
+      <span id="i-prev" class="info" style="display:none;">上一篇</span>
+      <span id="i-next" class="info" style="display:none;">下一篇</span>
+      <span id="i-top" class="info" style="display:none;">返回顶部</span>
+      <span id="i-share" class="info" style="display:none;">分享文章</span>
+    </span>
+    <br>
+    <div id="share" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/"><i class="fab fa-facebook " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&text=the useful tools by reading golang code from github"><i class="fab fa-twitter " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-linkedin " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&is_video=false&description=the useful tools by reading golang code from github"><i class="fab fa-pinterest " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=the useful tools by reading golang code from github&body=Check out this article: https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/"><i class="fas fa-envelope " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-get-pocket " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-reddit " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-stumbleupon " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-digg " aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&name=the useful tools by reading golang code from github&description="><i class="fab fa-tumblr " aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+    <div id="toc">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#从-Github-Golang-开源库中学到的知识"><span class="toc-number">1.</span> <span class="toc-text">从 Github Golang 开源库中学到的知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#cmdline-prompt"><span class="toc-number">1.1.</span> <span class="toc-text">cmdline prompt</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cobra"><span class="toc-number">1.1.1.</span> <span class="toc-text">cobra</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DI"><span class="toc-number">1.2.</span> <span class="toc-text">DI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#wire"><span class="toc-number">1.2.1.</span> <span class="toc-text">wire</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-routine"><span class="toc-number">1.3.</span> <span class="toc-text">Go routine</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#async"><span class="toc-number">1.3.1.</span> <span class="toc-text">async</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#具体例子"><span class="toc-number">1.4.</span> <span class="toc-text">具体例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#corba"><span class="toc-number">1.4.1.</span> <span class="toc-text">corba</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wire-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">wire</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#context"><span class="toc-number">1.4.3.</span> <span class="toc-text">context</span></a></li></ol></li></ol></li></ol>
+    </div>
+  </span>
+</div>
+
+    
+    <div class="content index py4">
+        
+        <article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+  <header>
+    
+    <h1 class="posttitle" itemprop="name headline">
+        the useful tools by reading golang code from github
+    </h1>
+
+
+
+    <div class="meta">
+      <span class="author" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+        <span itemprop="name">WindFlow</span>
+      </span>
+      
+    <div class="postdate">
+      
+        <time datetime="2019-08-16T01:26:16.000Z" itemprop="datePublished">2019-08-16</time>
+        
+      
+    </div>
+
+
+      
+
+      
+
+    </div>
+  </header>
+  
+
+  <div class="content" itemprop="articleBody">
+    <h1 id="从-Github-Golang-开源库中学到的知识"><a href="#从-Github-Golang-开源库中学到的知识" class="headerlink" title="从 Github Golang 开源库中学到的知识"></a>从 Github Golang 开源库中学到的知识</h1><h2 id="cmdline-prompt"><a href="#cmdline-prompt" class="headerlink" title="cmdline prompt"></a>cmdline prompt</h2><h3 id="cobra"><a href="#cobra" class="headerlink" title="cobra"></a>cobra</h3><p>cobra <a href="https://github.com/spf13/cobra" target="_blank" rel="noopener">github.com/spf13/cobra</a> 支持多级菜单，命令建议，建立文档，使用说明等。</p>
+<h2 id="DI"><a href="#DI" class="headerlink" title="DI"></a>DI</h2><h3 id="wire"><a href="#wire" class="headerlink" title="wire"></a>wire</h3><p>wire <a href="https://github.com/google/wire" target="_blank" rel="noopener">github.com/google/wire</a> 省去了繁琐的调用构造函数的生成最终对象的过程，把你从无意义的劳动中解脱出来。</p>
+<h2 id="Go-routine"><a href="#Go-routine" class="headerlink" title="Go routine"></a>Go routine</h2><h3 id="async"><a href="#async" class="headerlink" title="async"></a>async</h3><p>async <a href="https://github.com/studiosol/async" target="_blank" rel="noopener">github.com/studiosol/async</a> 非常轻量的并发库<br>学到的点：</p>
+<ol>
+<li>context 的作用:<br>context.Context 提供了一种幽雅地中断，收尾程序的机制。</li>
+<li>channel selector 机制:<br>select 在某一channel case满足时退出，如果同时有channel case到达，随机选择一个。 </li>
+<li>channel closed:<br>writeable channel closed 之后，仍然可以被接收。可通过 if x,ok &lt;- somechannel; ok 来判断是否关闭。</li>
+</ol>
+<hr>
+<h2 id="具体例子"><a href="#具体例子" class="headerlink" title="具体例子"></a>具体例子</h2><h3 id="corba"><a href="#corba" class="headerlink" title="corba"></a>corba</h3><figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Execute</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> echoTimes <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> cmdPrint = &amp;cobra.Command&#123;</span><br><span class="line">		Use:   <span class="string">"print [string to print]"</span>,</span><br><span class="line">		Short: <span class="string">"Print anything to the screen"</span>,</span><br><span class="line">		Long: <span class="string">`print is for printing anything back to the screen.</span></span><br><span class="line"><span class="string">For many years people have printed back to the screen.`</span>,</span><br><span class="line">		Args: cobra.MinimumNArgs(<span class="number">1</span>),</span><br><span class="line">		Run: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"Print: "</span> + strings.Join(args, <span class="string">" "</span>))</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> cmdEcho = &amp;cobra.Command&#123;</span><br><span class="line">		Use:   <span class="string">"echo [string to echo]"</span>,</span><br><span class="line">		Short: <span class="string">"Echo anything to the screen"</span>,</span><br><span class="line">		Long: <span class="string">`echo is for echoing anything back.</span></span><br><span class="line"><span class="string">Echo works a lot like print, except it has a child command.`</span>,</span><br><span class="line">		Args: cobra.MinimumNArgs(<span class="number">1</span>),</span><br><span class="line">		Run: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">			fmt.Println(<span class="string">"Print: "</span> + strings.Join(args, <span class="string">" "</span>))</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> cmdTimes = &amp;cobra.Command&#123;</span><br><span class="line">		Use:   <span class="string">"times [string to echo]"</span>,</span><br><span class="line">		Short: <span class="string">"Echo anything to the screen more times"</span>,</span><br><span class="line">		Long: <span class="string">`echo things multiple times back to the user by providing</span></span><br><span class="line"><span class="string">a count and a string.`</span>,</span><br><span class="line">		Args: cobra.MinimumNArgs(<span class="number">1</span>),</span><br><span class="line">		Run: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">			<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; echoTimes; i++ &#123;</span><br><span class="line">				fmt.Println(<span class="string">"Echo: "</span> + strings.Join(args, <span class="string">" "</span>))</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	cmdTimes.Flags().IntVarP(&amp;echoTimes, <span class="string">"times"</span>, <span class="string">"t"</span>, <span class="number">1</span>, <span class="string">"times to echo the input"</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> subCmd = &amp;cobra.Command&#123;</span><br><span class="line">		Use:   <span class="string">"sub [no options!]"</span>,</span><br><span class="line">		Short: <span class="string">"My subcommand"</span>,</span><br><span class="line">		PreRun: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"Inside subCmd PreRun with args: %v\n"</span>, args)</span><br><span class="line">		&#125;,</span><br><span class="line">		Run: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"Inside subCmd Run with args: %v\n"</span>, args)</span><br><span class="line">		&#125;,</span><br><span class="line">		PostRun: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"Inside subCmd PostRun with args: %v\n"</span>, args)</span><br><span class="line">		&#125;,</span><br><span class="line">		PersistentPostRun: <span class="function"><span class="keyword">func</span><span class="params">(cmd *cobra.Command, args []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">"Inside subCmd PersistentPostRun with args: %v\n"</span>, args)</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> rootCmd = &amp;cobra.Command&#123;Use: <span class="string">"app"</span>&#125;</span><br><span class="line">	rootCmd.AddCommand(cmdPrint, cmdEcho, subCmd)</span><br><span class="line">	cmdEcho.AddCommand(cmdTimes)</span><br><span class="line"></span><br><span class="line">	err := doc.GenMarkdownTree(rootCmd, <span class="string">"./"</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(err.Error())</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	rootCmd.Execute()</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="wire-1"><a href="#wire-1" class="headerlink" title="wire"></a>wire</h3><ol>
+<li>按照<a href="https://github.com/google/wire/blob/master/_tutorial/README.md" target="_blank" rel="noopener">官方例子</a>建立 mian.go wire.go</li>
+<li><p>下载wire: </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">go get github.com/google/wire/cmd/wire</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编译出 wire executable</p>
+</li>
+<li>wire main.go wire.go, 不出意外将得到wire_gen.go</li>
+<li>go build 得到编译的最终结果</li>
+</ol>
+<h3 id="context"><a href="#context" class="headerlink" title="context"></a>context</h3><figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">dowait</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> count = <span class="number">7</span></span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup <span class="comment">// use default value is ok</span></span><br><span class="line">	wg.Add(count)</span><br><span class="line"></span><br><span class="line">	ctx, cancel := context.WithCancel(context.Background())</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; count; i++ &#123;</span><br><span class="line">		<span class="keyword">var</span> k = i</span><br><span class="line">		<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">			<span class="keyword">defer</span> wg.Done()</span><br><span class="line">			d := k * <span class="keyword">int</span>(time.Second)</span><br><span class="line">			<span class="keyword">select</span> &#123;</span><br><span class="line">			<span class="keyword">case</span> &lt;-ctx.Done(): <span class="comment">// 给一个优雅地结束任务的机会</span></span><br><span class="line">				fmt.Println(<span class="string">"context done"</span>, k)</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			<span class="keyword">case</span> &lt;-time.After(time.Duration(d)):</span><br><span class="line">				fmt.Println(<span class="string">"work done"</span>, k)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;()</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		wg.Wait()</span><br><span class="line">		cancel()</span><br><span class="line">		fmt.Println(<span class="string">"wait over"</span>)</span><br><span class="line">	&#125;()</span><br><span class="line"></span><br><span class="line">	<span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		&lt;-time.After(<span class="number">3</span> * time.Second)</span><br><span class="line">		cancel()</span><br><span class="line">	&#125;()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  </div>
+</article>
+
+
+
+        
+          <div id="footer-post-container">
+  <div id="footer-post">
+
+    <div id="nav-footer" style="display: none">
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/">项目</a></li>
+        
+      </ul>
+    </div>
+
+    <div id="toc-footer" style="display: none">
+      <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#从-Github-Golang-开源库中学到的知识"><span class="toc-number">1.</span> <span class="toc-text">从 Github Golang 开源库中学到的知识</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#cmdline-prompt"><span class="toc-number">1.1.</span> <span class="toc-text">cmdline prompt</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cobra"><span class="toc-number">1.1.1.</span> <span class="toc-text">cobra</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DI"><span class="toc-number">1.2.</span> <span class="toc-text">DI</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#wire"><span class="toc-number">1.2.1.</span> <span class="toc-text">wire</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go-routine"><span class="toc-number">1.3.</span> <span class="toc-text">Go routine</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#async"><span class="toc-number">1.3.1.</span> <span class="toc-text">async</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#具体例子"><span class="toc-number">1.4.</span> <span class="toc-text">具体例子</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#corba"><span class="toc-number">1.4.1.</span> <span class="toc-text">corba</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#wire-1"><span class="toc-number">1.4.2.</span> <span class="toc-text">wire</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#context"><span class="toc-number">1.4.3.</span> <span class="toc-text">context</span></a></li></ol></li></ol></li></ol>
+    </div>
+
+    <div id="share-footer" style="display: none">
+      <ul>
+  <li><a class="icon" href="http://www.facebook.com/sharer.php?u=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/"><i class="fab fa-facebook fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://twitter.com/share?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&text=the useful tools by reading golang code from github"><i class="fab fa-twitter fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.linkedin.com/shareArticle?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-linkedin fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://pinterest.com/pin/create/bookmarklet/?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&is_video=false&description=the useful tools by reading golang code from github"><i class="fab fa-pinterest fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="mailto:?subject=the useful tools by reading golang code from github&body=Check out this article: https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/"><i class="fas fa-envelope fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="https://getpocket.com/save?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-get-pocket fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://reddit.com/submit?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-reddit fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.stumbleupon.com/submit?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-stumbleupon fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://digg.com/submit?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&title=the useful tools by reading golang code from github"><i class="fab fa-digg fa-lg" aria-hidden="true"></i></a></li>
+  <li><a class="icon" href="http://www.tumblr.com/share/link?url=https://simazhao.github.io/2019-08-16-the-useful-tools-by-reading-golang-code-from-github/&name=the useful tools by reading golang code from github&description="><i class="fab fa-tumblr fa-lg" aria-hidden="true"></i></a></li>
+</ul>
+
+    </div>
+
+    <div id="actions-footer">
+        <a id="menu" class="icon" href="#" onclick="$('#nav-footer').toggle();return false;"><i class="fas fa-bars fa-lg" aria-hidden="true"></i> 菜单</a>
+        <a id="toc" class="icon" href="#" onclick="$('#toc-footer').toggle();return false;"><i class="fas fa-list fa-lg" aria-hidden="true"></i> 目录</a>
+        <a id="share" class="icon" href="#" onclick="$('#share-footer').toggle();return false;"><i class="fas fa-share-alt fa-lg" aria-hidden="true"></i> 分享</a>
+        <a id="top" style="display:none" class="icon" href="#" onclick="$('html, body').animate({ scrollTop: 0 }, 'fast');"><i class="fas fa-chevron-up fa-lg" aria-hidden="true"></i> 返回顶部</a>
+    </div>
+
+  </div>
+</div>
+
+        
+        <footer id="footer">
+  <div class="footer-left">
+    Copyright &copy; 2019 WindFlow
+  </div>
+  <div class="footer-right">
+    <nav>
+      <ul>
+         
+          <li><a href="/">首页</a></li>
+         
+          <li><a href="/about/">关于</a></li>
+         
+          <li><a href="/archives/">归档</a></li>
+         
+          <li><a href="/">项目</a></li>
+        
+      </ul>
+    </nav>
+  </div>
+</footer>
+
+    </div>
+    <!-- styles -->
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+<link rel="stylesheet" href="/lib/justified-gallery/css/justifiedGallery.min.css">
+
+    <!-- jquery -->
+<script src="/lib/jquery/jquery.min.js"></script>
+<script src="/lib/justified-gallery/js/jquery.justifiedGallery.min.js"></script>
+<script src="/js/main.js"></script>
+<!-- search -->
+
+<!-- Google Analytics -->
+
+<!-- Baidu Analytics -->
+
+<!-- Disqus Comments -->
+
+
+</body>
+</html>
