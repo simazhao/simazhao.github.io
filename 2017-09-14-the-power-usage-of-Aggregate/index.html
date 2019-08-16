@@ -13,7 +13,7 @@
 <meta property="og:site_name" content="WindFlow">
 <meta property="og:description" content="the power usage of Aggregate因为阅读了某位作者文章的缘故，我也去翻了下.net Mvc启动管道的源码。在其中发现了这么一段代码： endContinuation = filters.Reverse&amp;lt;IActionFilter&amp;gt;().Aggregate&amp;lt;IActionFilter, Func&amp;lt;Func&amp;lt;ActionExecutedContex">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-02-27T11:58:14.299Z">
+<meta property="og:updated_time" content="2019-08-16T03:40:56.701Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="the power usage of Aggregate">
 <meta name="twitter:description" content="the power usage of Aggregate因为阅读了某位作者文章的缘故，我也去翻了下.net Mvc启动管道的源码。在其中发现了这么一段代码： endContinuation = filters.Reverse&amp;lt;IActionFilter&amp;gt;().Aggregate&amp;lt;IActionFilter, Func&amp;lt;Func&amp;lt;ActionExecutedContex">
@@ -213,7 +213,7 @@
 <p>一般来说，我们对于Linq Aggregate 的运用都来自于很简单的例子，或者很常见的场景，比如字符串连接：</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">new List&lt;String&gt;() &#123;&quot;aa&quot;, &quot;bb&quot;&#125;.Aggregate((t, e) =&gt; t + &quot;-&quot; + e)</span><br></pre></td></tr></table></figure>
 <p>这么写谁都会，但涉及到复杂一点的东西，就不会想到用聚合来做。说到底，还是对某种概念的理解流于表面。例如，我们可以这样实现一个累加生成器：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Func&lt;int, int&gt; Sumer(IEnumerable&lt;int&gt; seeds)</span><br><span class="line">&#123;</span><br><span class="line">    return seeds.Aggregate&lt;int, Func&lt;int, int&gt;&gt;(x =&gt; x, (next, number) =&gt; y =&gt; next(number) + y);</span><br><span class="line">&#125;</span><br><span class="line">Sumer(new [] &#123;1,2,3&#125;)(4); //10</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Func&lt;int, int&gt; Sumer(IEnumerable&lt;int&gt; seeds)</span><br><span class="line">&#123;</span><br><span class="line">    return seeds.Aggregate&lt;int, Func&lt;int, int&gt;&gt;(x =&gt; x, (acc, number) =&gt; y =&gt; acc(number) + y);</span><br><span class="line">&#125;</span><br><span class="line">Sumer(new [] &#123;1,2,3&#125;)(4); //10</span><br></pre></td></tr></table></figure>
 
   </div>
 </article>
