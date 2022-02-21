@@ -14,7 +14,7 @@
 <meta property="og:description" content="在 Cloundflare 博客的这篇文章里，详细回顾了它的一次大规模宕机。故障根源在于一个有问题的正则表达式导致 cpu 占满。这个失控的正则表达式陷入了回溯陷阱。 正则表达式回溯给出一个正则表达式 (x+x+)+y，如何匹配 “xxxxxxy”？ 我们将第一个x+简称为 x1，第二个x+简称为x2，(x+x+) 简称为 xg。 第一步先匹配6个x，满足x1；第二步再匹配x时失败，x1回吐一个x">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-21T06:28:15.000Z">
-<meta property="article:modified_time" content="2022-02-21T06:41:15.166Z">
+<meta property="article:modified_time" content="2022-02-21T07:04:31.710Z">
 <meta property="article:author" content="WindFlow">
 <meta name="twitter:card" content="summary">
     
@@ -168,9 +168,6 @@
 <p>对于一个url包含 xxx&#x3D;yyy&amp;aaa&#x3D;bbb&amp;ccc&#x3D;ddd这样的形式来说，匹配多次cpu简直要把鸡蛋烧熟。</p>
 <h2 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h2><p>回溯的原因在于采用了饥饿匹配模式，更改为懒惰模式<code>*?</code>。优化写法能显著地提升性能。</p>
 <p>另外也可以换个引擎，将NFA换成DFA。</p>
-<figure class="highlight golang"><table><tr><td class="code"><pre><span class="line"><span class="type">int</span> a = <span class="number">1</span></span><br></pre></td></tr></table></figure>
-
-
 <h4 id="ref"><a href="#ref" class="headerlink" title="ref"></a>ref</h4><p><a target="_blank" rel="noopener" href="https://www.regular-expressions.info/catastrophic.html">catastropic</a></p>
 
   </div>
